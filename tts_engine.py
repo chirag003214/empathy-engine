@@ -1,5 +1,4 @@
-import pyttsx3
-import os
+from gtts import gTTS
 
 BASE_RATE = 175
 BASE_VOLUME = 1.0
@@ -32,11 +31,13 @@ def get_voice_params(emotion: str, intensity: float) -> dict:
 
 
 def synthesize(text: str, emotion: str, intensity: float, output_path: str) -> str:
-    engine = pyttsx3.init()
     params = get_voice_params(emotion, intensity)
-    engine.setProperty("rate", params["rate"])
-    engine.setProperty("volume", params["volume"])
-    engine.save_to_file(text, output_path)
-    engine.runAndWait()
-    engine.stop()
+
+    # Map rate (wpm) to speed multiplier (0.5–2.0)
+    # Baseline 175 wpm → speed 1.0
+    speed_multiplier = params["rate"] / BASE_RATE
+    speed_multiplier = max(0.5, min(2.0, speed_multiplier))  # clamp to valid range
+
+    tts = gTTS(text=text, lang='en', slow=(speed_multiplier < 0.9))
+    tts.save(output_path)
     return output_path
