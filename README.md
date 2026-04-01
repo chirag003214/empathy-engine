@@ -2,6 +2,8 @@
 
 > AI-powered emotional text-to-speech — detects the emotion in any sentence and speaks it back with a voice tuned to match.
 
+**[Try it live →](https://empathy-engine.streamlit.app/)** or run locally after cloning.
+
 Empathy Engine combines a fine-tuned transformer emotion classifier with offline speech synthesis to produce expressive, emotionally aware audio from plain text. Paste a sentence, hit **Analyze & Speak**, and hear the difference between a joyful announcement and an angry complaint — without any API keys or cloud services.
 
 ---
@@ -21,9 +23,10 @@ Empathy Engine combines a fine-tuned transformer emotion classifier with offline
 
 - **7-class emotion detection** — joy, surprise, anger, sadness, fear, disgust, neutral
 - **Intensity-scaled voice params** — rate and volume shift continuously with model confidence
-- **Two UIs** — FastAPI + Jinja2 web app **and** a Streamlit app (pick your preferred stack)
+- **Live demo at [empathy-engine.streamlit.app](https://empathy-engine.streamlit.app/)** — no setup required
+- **Two UIs for local development** — FastAPI + Jinja2 web app **or** Streamlit app
 - **100% offline after first run** — pyttsx3 uses the OS-native TTS engine (no API keys)
-- **Instant audio playback** — browser audio player auto-plays the synthesised WAV
+- **Instant audio playback** — synthesised audio plays automatically in the browser
 
 ---
 
@@ -69,17 +72,22 @@ pip install -r requirements.txt
 
 ## Running
 
-### FastAPI (web app)
-```bash
-uvicorn main:app --reload
-```
-Open **http://localhost:8000**
+### Live Demo (No Installation)
+Open **[empathy-engine.streamlit.app](https://empathy-engine.streamlit.app/)** in your browser. The app is hosted on Streamlit Cloud and ready to use immediately.
 
-### Streamlit
+### Local Development
+
+**Streamlit (recommended):**
 ```bash
 streamlit run streamlit_app.py
 ```
 Open **http://localhost:8501**
+
+**FastAPI:**
+```bash
+uvicorn main:app --reload
+```
+Open **http://localhost:8000**
 
 ---
 
@@ -125,6 +133,19 @@ A barely-angry sentence shouldn't sound as intense as a furious one. Scaling voi
 
 **Why pyttsx3?**
 Zero cloud dependency — synthesis works offline using the OS-native engine. `engine.stop()` is called after every synthesis to cleanly tear down the background thread and prevent resource leaks across HTTP requests.
+
+---
+
+---
+
+## Deployment
+
+The Streamlit app is deployed on **Streamlit Cloud** at [empathy-engine.streamlit.app](https://empathy-engine.streamlit.app/).
+
+To deploy your own fork:
+1. Connect your GitHub repo to [share.streamlit.io](https://share.streamlit.io/)
+2. Select this repo, branch `main`, main file `streamlit_app.py`
+3. Streamlit Cloud will auto-deploy on every push to `main`
 
 ---
 
